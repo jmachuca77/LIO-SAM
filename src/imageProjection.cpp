@@ -1,6 +1,12 @@
 #include "utility.h"
 #include "lio_sam/cloud_info.h"
 
+static const double pi = std::acos(-1);
+static const double d2r = pi / 180;
+static const double r2d = 180 / pi;
+template<typename T> T deg2rad(T val) { return T(val * d2r); }
+template<typename T> T rad2deg(T val) { return T(val * r2d); }
+
 struct VelodynePointXYZIRT
 {
     PCL_ADD_POINT4D
@@ -164,7 +170,7 @@ public:
         tf::quaternionMsgToTF(thisImu.orientation, orientation);
         tf::Matrix3x3(orientation).getRPY(imuRoll, imuPitch, imuYaw);
         cout << "IMU roll pitch yaw: " << endl;
-        cout << "roll: " << imuRoll << ", pitch: " << imuPitch << ", yaw: " << imuYaw << endl << endl;
+        cout << "roll: " << rad2deg(imuRoll) << ", pitch: " << rad2deg(imuPitch) << ", yaw: " << rad2deg(imuYaw) << endl << endl;
     }
 
     void odometryHandler(const nav_msgs::Odometry::ConstPtr& odometryMsg)
